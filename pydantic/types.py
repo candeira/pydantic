@@ -35,6 +35,7 @@ from .validators import (
     constr_length_validator,
     constr_lower,
     constr_strip_whitespace,
+    constr_upper,
     decimal_validator,
     float_validator,
     frozenset_validator,
@@ -329,6 +330,7 @@ else:
 class ConstrainedBytes(bytes):
     strip_whitespace = False
     to_lower = False
+    to_upper = False
     min_length: OptionalInt = None
     max_length: OptionalInt = None
     strict: bool = False
@@ -342,6 +344,7 @@ class ConstrainedBytes(bytes):
         yield strict_bytes_validator if cls.strict else bytes_validator
         yield constr_strip_whitespace
         yield constr_lower
+        yield constr_upper
         yield constr_length_validator
 
 
@@ -349,6 +352,7 @@ def conbytes(
     *,
     strip_whitespace: bool = False,
     to_lower: bool = False,
+    to_upper: bool = False,
     min_length: int = None,
     max_length: int = None,
     strict: bool = False,
@@ -357,6 +361,7 @@ def conbytes(
     namespace = dict(
         strip_whitespace=strip_whitespace,
         to_lower=to_lower,
+        to_upper=to_upper,
         min_length=min_length,
         max_length=max_length,
         strict=strict,
@@ -378,6 +383,7 @@ else:
 class ConstrainedStr(str):
     strip_whitespace = False
     to_lower = False
+    to_upper = False
     min_length: OptionalInt = None
     max_length: OptionalInt = None
     curtail_length: OptionalInt = None
@@ -398,6 +404,7 @@ class ConstrainedStr(str):
         yield strict_str_validator if cls.strict else str_validator
         yield constr_strip_whitespace
         yield constr_lower
+        yield constr_upper
         yield constr_length_validator
         yield cls.validate
 
@@ -417,6 +424,7 @@ def constr(
     *,
     strip_whitespace: bool = False,
     to_lower: bool = False,
+    to_upper: bool = False,
     strict: bool = False,
     min_length: int = None,
     max_length: int = None,
@@ -427,6 +435,7 @@ def constr(
     namespace = dict(
         strip_whitespace=strip_whitespace,
         to_lower=to_lower,
+        to_upper=to_upper,
         strict=strict,
         min_length=min_length,
         max_length=max_length,

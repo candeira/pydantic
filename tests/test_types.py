@@ -129,6 +129,22 @@ def test_constrained_bytes_lower_disabled():
     assert m.v == b'ABCD'
 
 
+def test_constrained_bytes_upper_enabled():
+    class Model(BaseModel):
+        v: conbytes(to_upper=True)
+
+    m = Model(v=b'abcd')
+    assert m.v == b'ABCD'
+
+
+def test_constrained_bytes_upper_disabled():
+    class Model(BaseModel):
+        v: conbytes(to_upper=False)
+
+    m = Model(v=b'abcd')
+    assert m.v == b'abcd'
+
+
 def test_constrained_bytes_strict_true():
     class Model(BaseModel):
         v: conbytes(strict=True)
@@ -713,6 +729,22 @@ def test_constrained_str_lower_disabled():
 
     m = Model(v='ABCD')
     assert m.v == 'ABCD'
+
+
+def test_constrained_str_upper_enabled():
+    class Model(BaseModel):
+        v: constr(to_upper=True)
+
+    m = Model(v='abcd')
+    assert m.v == 'ABCD'
+
+
+def test_constrained_str_upper_disabled():
+    class Model(BaseModel):
+        v: constr(to_upper=False)
+
+    m = Model(v='abcd')
+    assert m.v == 'abcd'
 
 
 def test_constrained_str_max_length_0():
@@ -1832,6 +1864,34 @@ def test_anystr_lower_disabled():
 
         class Config:
             anystr_lower = False
+
+    m = Model(str_check='ABCDefG', bytes_check=b'abCD1Fg')
+
+    assert m.str_check == 'ABCDefG'
+    assert m.bytes_check == b'abCD1Fg'
+
+
+def test_anystr_upper_enabled():
+    class Model(BaseModel):
+        str_check: str
+        bytes_check: bytes
+
+        class Config:
+            anystr_upper = True
+
+    m = Model(str_check='ABCDefG', bytes_check=b'abCD1Fg')
+
+    assert m.str_check == 'ABCDEFG'
+    assert m.bytes_check == b'ABCD1FG'
+
+
+def test_anystr_upper_disabled():
+    class Model(BaseModel):
+        str_check: str
+        bytes_check: bytes
+
+        class Config:
+            anystr_upper = False
 
     m = Model(str_check='ABCDefG', bytes_check=b'abCD1Fg')
 

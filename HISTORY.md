@@ -1,3 +1,7 @@
+## Current Pull Review Changes
+
+* Add `Config.anystr_upper` and also `to_upper` kwarg to `constr` and `conbytes`, #TBD by @candeira
+
 ## v1.9.0 (2021-12-31)
 
 Thank you to pydantic's sponsors:

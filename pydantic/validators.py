@@ -210,6 +210,10 @@ def anystr_lower(v: 'StrBytes') -> 'StrBytes':
     return v.lower()
 
 
+def anystr_upper(v: 'StrBytes') -> 'StrBytes':
+    return v.upper()
+
+
 def ordered_dict_validator(v: Any) -> 'AnyOrderedDict':
     if isinstance(v, OrderedDict):
         return v
@@ -495,6 +499,13 @@ def constr_lower(v: 'StrBytes', field: 'ModelField', config: 'BaseConfig') -> 'S
     return v
 
 
+def constr_upper(v: 'StrBytes', field: 'ModelField', config: 'BaseConfig') -> 'StrBytes':
+    upper = field.type_.to_upper or config.anystr_upper
+    if upper:
+        v = v.upper()
+    return v
+
+
 def validate_json(v: Any, config: 'BaseConfig') -> Any:
     if v is None:
         # pass None through to other validators
@@ -615,6 +626,7 @@ _VALIDATORS: List[Tuple[Type[Any], List[Any]]] = [
             str_validator,
             IfConfig(anystr_strip_whitespace, 'anystr_strip_whitespace'),
             IfConfig(anystr_lower, 'anystr_lower'),
+            IfConfig(anystr_upper, 'anystr_upper'),
             IfConfig(anystr_length_validator, 'min_anystr_length', 'max_anystr_length'),
         ],
     ),
@@ -624,6 +636,7 @@ _VALIDATORS: List[Tuple[Type[Any], List[Any]]] = [
             bytes_validator,
             IfConfig(anystr_strip_whitespace, 'anystr_strip_whitespace'),
             IfConfig(anystr_lower, 'anystr_lower'),
+            IfConfig(anystr_upper, 'anystr_upper'),
             IfConfig(anystr_length_validator, 'min_anystr_length', 'max_anystr_length'),
         ],
     ),
